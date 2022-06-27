@@ -1,0 +1,54 @@
+<html lang="en" xmlns:th="http://www.thymeleaf.org">
+<head>
+
+    <!-- CSS only -->
+    <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.2.0-beta1/dist/css/bootstrap.min.css" rel="stylesheet" integrity="sha384-0evHe/X+R7YkIZDRvuzKMRqM+OrBnVFBL6DOitfPri4tjfHxaWutUpFmBp4vmVor" crossorigin="anonymous">
+    <!-- JavaScript Bundle with Popper -->
+    <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.2.0-beta1/dist/js/bootstrap.bundle.min.js" integrity="sha384-pprn3073KE6tl6bjs2QrFaJGz5/SUsLqktiwsUTF55Jfv3qYSDhgCecCxMW52nD2" crossorigin="anonymous"></script>
+    <link rel="stylesheet" href="https://unicons.iconscout.com/release/v4.0.0/css/line.css">
+
+
+    <title> Agent </title></head>
+
+<script>
+
+</script>
+<body>
+<div class="container">
+    <br/>
+    <br/>
+    <br/>
+    <br/>
+    <h2> Agents List </h2>
+    <br/>
+    <br/>
+
+     <a th:href="@{/agent/addpage}"  > <i style="color: blueviolet; cursor: pointer" class="uil uil-plus-circle" ></i></a>
+    <br/>
+    <br/>
+    <table class="table table-bordered table-striped">
+        <thead>
+        <tr>
+            <th> Agent ID </th>
+            <th> Actions </th>
+        </tr>
+        </thead>
+        <tbody>
+
+        <tr th:each="agent: ${agents}">
+            <td th:text="${agent.agentId}"></td>
+            <td>
+
+                <div style="display: flex">
+                    <i style="margin-left: 5px" class="uil uil-info-circle"></i>
+                    <i class="uil uil-edit-alt" style="margin-left: 5px"></i>
+                    <i class="uil uil-trash-alt" style="margin-left: 5px"></i>
+                </div>
+
+            </td>
+        </tr>
+        </tbody>
+    </table>
+</div>
+</body>
+</html>
