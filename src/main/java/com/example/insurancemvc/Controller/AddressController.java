@@ -31,10 +31,13 @@ public class AddressController {
         return "redirect:getall";
     }
 
-    @GetMapping("/get/{id}")
-    public ModelAndView get(@PathVariable Long id){
-        return addressService.getAddress(id);
+    @GetMapping("/getOne")
+    @ResponseBody
+    public Address getOne(Long id){
+        return addressService.getAddressOne(id);
     }
+
+
 
     @GetMapping("/updatePage/{id}")
     public ModelAndView updatePage(@PathVariable Long id){

@@ -21,6 +21,8 @@ public class AddressService {
         ModelAndView mav = new ModelAndView("Address/address-list");
         List<Address> addresses = addressRepository.getallValidAddress();
         mav.addObject("addresses", addresses);
+        Address addressObj = new Address();
+        mav.addObject("newAddress", addressObj);
         return mav;
     }
 
@@ -37,11 +39,15 @@ public class AddressService {
         addressRepository.save(address);
     }
 
-    public ModelAndView getAddress(Long id){
-        ModelAndView mav = new ModelAndView("Address/address-info");
-        Address address = addressRepository.getValidAddress(id);
-        mav.addObject("address", address);
-        return mav;
+//    public ModelAndView getAddress(Long id){
+//        ModelAndView mav = new ModelAndView("Address/address-info");
+//        Address address = addressRepository.getValidAddress(id);
+//        mav.addObject("address", address);
+//        return mav;
+//    }
+
+    public Address getAddressOne(Long id){
+        return addressRepository.findById(id).get();
     }
 
     public ModelAndView getAddressForUpdate(Long id){
