@@ -4,12 +4,14 @@
     <meta charset="UTF-8">
     <title>Address</title>
 
-    <script th:src="@{/webjars/jquery/3.4.1/jquery.min.js}"></script>
-    <script th:src="@{/webjars/jquery/3.4.1/jquery.js}"></script>
+    <script th:src="@{/webjars/jquery/3.6.0/jquery.min.js}"></script>
+    <script th:src="@{/webjars/jquery/3.6.0/jquery.js}"></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/jqueryui/1.12.1/jquery-ui.min.js"  crossorigin="anonymous" referrerpolicy="no-referrer"></script>
     <script th:src="@{/webjars/popper.js/2.9.3/umd/popper.min.js}"></script>
-    <link th:rel="stylesheet" th:href="@{/webjars/bootstrap/5.1.3/js/bootstrap.min.js}">
-    <link th:rel="stylesheet" th:href="@{/webjars/bootstrap/5.1.3/css/bootstrap.min.css}">
+    <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.1.3/dist/css/bootstrap.min.css" rel="stylesheet"  crossorigin="anonymous">
+    <script src="https://maxcdn.bootstrapcdn.com/bootstrap/4.0.0/js/bootstrap.min.js"></script>
     <link rel="stylesheet" href="https://unicons.iconscout.com/release/v4.0.0/css/line.css">
+
 
 
 
@@ -24,7 +26,7 @@
     <br/>
     <br/>
 
-     <button class="btn btn-primary" data-toggle="modal" data-target="#addModal" ><i style="color: white; cursor: pointer; width: 300px" class="uil uil-plus-circle"></i> </button>
+     <a data-toggle="modal" data-target="#addModal" ><i style="color: blueviolet; cursor: pointer; width: 300px" class="uil uil-plus-circle"></i> </a>
 
 
     <br/>
@@ -43,34 +45,304 @@
             <tr th:each="address: ${addresses}">
                 <td th:text="${address.id}" ></td>
                 <td th:text="${address.toAddress}" ></td>
-                <td th:text="${address.addressLine1} + ',' + ${address.addressLine2}" ></td>
+                <td th:text="${address.addressLine1} + ' ' + ${address.addressLine2}" ></td>
                 <td th:text="${address.city}" ></td>
                 <td>
                     <div style="display: flex">
-                        <a style="text-decoration: none" th:href="@{'/address/get/' + ${address.id}}"><i style="margin-left: 5px; cursor: pointer" class="uil uil-info-circle"></i></a>
-                        <a style="text-decoration: none" th:href="@{'/address/updatePage/' + ${address.id}}"><i class="uil uil-edit-alt" style="margin-left: 5px"></i></a>
+                        <a style="text-decoration: none" class="infoBtn" th:href="@{/address/getOne/(id=${address.id})}"><i style="margin-left: 5px; cursor: pointer" class="uil uil-info-circle"></i></a>
+                        <a style="text-decoration: none" class="editBtn" th:href="@{/address/getOne/(id=${address.id})}"><i class="uil uil-edit-alt" style="margin-left: 5px;cursor: pointer"></i></a>
                         <a style="text-decoration: none" th:href="@{/address/softDelete(id=${address.id})}"><i class="uil uil-trash-alt" style="margin-left: 5px"></i></a>
                     </div>
                 </td>
             </tr>
         </tbody>
     </table>
-
-
 </div>
-<th:block th:replace="_modals :: modal('addModal')">modal</th:block>
+
+<!--Add Modal-->
+<div class="modal fade " id="addModal" tabindex="-1" role="dialog"  aria-hidden="true">
+    <div class="modal-dialog modal-dialog-centered modal-xl" role="document">
+        <div class="modal-content">
+            <div class="modal-header">
+                <h5 class="modal-title" >Add Address</h5>
+                <button type="button" class="btn-close" data-dismiss="modal" aria-label="Close">
+                </button>
+            </div>
+            <div class="modal-body">
+
+                <div class="container">
+                <form th:action="@{/address/add}" method="post" th:object="${newAddress}">
+                    <div class="row">
+                        <div class="col">
+                            <label>
+                                To Address
+                                <input type="text" th:field="${newAddress.toAddress}" class="form-control col-4 mb-4 "  placeholder="Enter address owner" />
+                            </label>
+                        </div>
+
+                        <div class="col">
+                            <label>
+                                Address Line 1
+                                <input type="text" th:field="${newAddress.addressLine1}" class="form-control col-4 mb-4 "  placeholder="Enter address line" />
+                            </label>
+                        </div>
+
+                        <div class="col">
+                            <label>
+                                Address Line 2
+                                <input type="text" th:field="${newAddress.addressLine2}" class="form-control col-4 mb-4 "  placeholder="Enter address line" />
+                            </label>
+                        </div>
+                    </div>
+
+                    <div class="row">
+                        <div class="col">
+                            <label>
+                                City
+                                <input type="text" th:field="${newAddress.city}" class="form-control col-4 mb-4 "  placeholder="Enter your city" />
+                            </label>
+                        </div>
+
+                        <div class="col">
+                            <label>
+                                State
+                                <input type="text" th:field="${newAddress.state}" class="form-control col-4 mb-4 "  placeholder="Enter your state" />
+                            </label>
+                        </div>
+
+                        <div class="col">
+                            <label>
+                                Country
+                                <input type="text" th:field="${newAddress.country}" class="form-control col-4 mb-4 "  placeholder="Enter your country" />
+                            </label>
+                        </div>
+                    </div>
+
+                    <div class="row">
+                        <div class="col">
+                            <label>
+                                PostalCode/ZipCode
+                                <input type="text" th:field="${newAddress.pincode}" class="form-control col-4 mb-4 "  placeholder="Enter your zipcode/postalcode" />
+                            </label>
+                        </div>
+
+                        <div class="col">
+                            <label>
+                                Address Type
+                                <select th:field="${newAddress.addressType}" class="form-control col-4 mb-4" >
+                                    <option value=""> --Select your Option--</option>
+                                    <option  value="RESIDENTIAL"> RESIDENTIAL </option>
+                                    <option  value="BUSINESS"> BUSINESS </option>
+                                </select>
+                            </label>
+                        </div>
+
+                        <div class="col">
+                            <label>
+                                Present Address
+                                <input type="checkbox" th:field="${newAddress.isPresentAddress}" class="form-check-input"  />
+                            </label>
+                        </div>
+
+                    </div>
+                    <div style="display: flex">
+                        <button class="btn btn-success"  type="submit"> Save </button>
+                        <button  data-dismiss="modal" class="btn btn-danger" style="margin-left: 10px" type="reset"> Cancel </button>
+                    </div>
+                </form>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
 
 
+<!--Update Modal-->
+<div class="modal fade " id=editModal tabindex="-1" role="dialog"  aria-hidden="true">
+    <div class="modal-dialog modal-dialog-centered modal-xl" role="document">
+        <div class="modal-content">
+            <div class="modal-header">
+                <h5 class="modal-title" >Update Address</h5>
+                <button type="button" class="btn-close" data-dismiss="modal" aria-label="Close">
+                </button>
+            </div>
+            <div class="modal-body">
 
+                <div class="container">
+                    <form th:action="@{/address/add}" method="post" th:object="${newAddress}"  >
+                        <input type="text" th:field="${newAddress.id}"  id="editId" hidden/>
+                        <div class="row">
+                            <div class="col">
+                                <label>
+                                    To Address
+                                    <input type="text"  class="form-control col-4 mb-4 " id="editToAddress" th:field="${newAddress.toAddress}"  placeholder="Enter address owner" />
+                                </label>
+                            </div>
+
+                            <div class="col">
+                                <label>
+                                    Address Line 1
+                                    <input type="text" class="form-control col-4 mb-4 " th:field="${newAddress.addressLine1}" id="editAddressLine1"  placeholder="Enter address line" />
+                                </label>
+                            </div>
+
+                            <div class="col">
+                                <label>
+                                    Address Line 2
+                                    <input type="text"  class="form-control col-4 mb-4 " th:field="${newAddress.addressLine2}"  id="editAddressLine2" placeholder="Enter address line" />
+                                </label>
+                            </div>
+                        </div>
+
+                        <div class="row">
+                            <div class="col">
+                                <label>
+                                    City
+                                    <input type="text"  class="form-control col-4 mb-4 " id="editCity" th:field="${newAddress.city}" placeholder="Enter your city" />
+                                </label>
+                            </div>
+
+                            <div class="col">
+                                <label>
+                                    State
+                                    <input type="text"  class="form-control col-4 mb-4 "  th:field="${newAddress.state}" id="editState" placeholder="Enter your state" />
+                                </label>
+                            </div>
+
+                            <div class="col">
+                                <label>
+                                    Country
+                                    <input type="text"  class="form-control col-4 mb-4 " id="editCountry" th:field="${newAddress.country}" placeholder="Enter your country" />
+                                </label>
+                            </div>
+                        </div>
+
+                        <div class="row">
+                            <div class="col">
+                                <label>
+                                    PostalCode/ZipCode
+                                    <input type="text"  class="form-control col-4 mb-4 " id="editPincode" th:field="${newAddress.pincode}"  placeholder="Enter your zipcode/postalcode" />
+                                </label>
+                            </div>
+
+                            <div class="col">
+                                <label>
+                                    Address Type
+                                    <select   id="editAddressType" th:field="${newAddress.addressType}" class="form-control col-4 mb-4" >
+                                        <option value=""> --Select your Option--</option>
+                                        <option  value="RESIDENTIAL"> RESIDENTIAL </option>
+                                        <option  value="BUSINESS"> BUSINESS </option>
+                                    </select>
+                                </label>
+                            </div>
+
+                            <div class="col">
+                                <label>
+                                    Present Address
+                                    <input type="checkbox"  th:field="${newAddress.isPresentAddress}" value="${newAddress.isPresentAddress}" id="editIsPresentAddress" class="form-check-input"  />
+                                </label>
+                            </div>
+
+                        </div>
+                        <div style="display: flex">
+                            <button class="btn btn-success"  type="submit"> Save </button>
+                            <button  data-dismiss="modal" class="btn btn-danger" style="margin-left: 10px" type="reset"> Cancel </button>
+                        </div>
+                    </form>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+
+
+<!--Info Modal-->
+
+<div class="modal fade " id=infoModal tabindex="-1" role="dialog"  aria-hidden="true">
+    <div class="modal-dialog modal-dialog-centered modal-lg" role="document">
+        <div class="modal-content">
+            <div class="modal-header">
+                <h5 class="modal-title" >Info Address</h5>
+                <button type="button" class="btn-close" data-dismiss="modal" aria-label="Close">
+                </button>
+            </div>
+            <div class="modal-body">
+                <div class="container">
+                    <h2> Address Information </h2>
+                    <h6 id="infoId"></h6>
+                    <h6 id="infoToAddress" ></h6>
+                    <h6 id="infoAddressLine1"></h6>
+                    <h6 id="infoAddressLine2" ></h6>
+                    <h6 id="infoCity"></h6>
+                    <h6 id="infoState"></h6>
+                    <h6 id="infoCountry"></h6>
+                    <h6 id="infoPincode"></h6>
+                    <h6 id="infoAddressType"></h6>
+                    <h6 id="infoIsPresentAddress"></h6>
+
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
 
 
 
 
 <script>
-    $('#addModal').on('show.bs.modal', function () {
-        $.get("/Address/address-add", function (data) {
-            $('#addModal').find('.modal-body').html(data);
+
+    $('document').ready(function (){
+        $('.table .editBtn').on('click', function (event){
+            event.preventDefault();
+
+            const href = $(this).attr('href');
+
+            $.get(href, function (address){
+                $('#editId').val(address.id);
+                $('#editToAddress').val(address.toAddress);
+                $('#editAddressLine1').val(address.addressLine1);
+                $('#editAddressLine2').val(address.addressLine2);
+                $('#editCity').val(address.city);
+                $('#editState').val(address.state);
+                $('#editCountry').val(address.country);
+                $('#editPincode').val(address.pincode);
+                $('#editAddressType').val(address.addressType);
+                $('#editIsPresentAddress').html(address.isPresentAddress !== true);
+            });
+            $('#editModal').modal();
         })
+
+        $('.table .infoBtn').on('click', function (event){
+            event.preventDefault();
+
+            const href = $(this).attr('href');
+
+            $.get(href, function (address){
+                $('#infoId').text( 'ID : ' + address.id);
+                $('#infoToAddress').text('To Address : ' + address.toAddress);
+                $('#infoAddressLine1').text('Address Line 1 : ' + address.addressLine1);
+                $('#infoAddressLine2').text('Address Line 2 : ' + address.addressLine2);
+                $('#infoCity').text('City : ' + address.city);
+                $('#infoState').text(' State : ' + address.state);
+                $('#infoCountry').text(' Country : ' + address.country);
+                $('#infoPincode').text(' ZipCode / Postal Code : ' + address.pincode);
+                $('#infoAddressType').text( 'Address Type : ' +   address.addressType);
+                $('#infoIsPresentAddress').text( 'Is Present Address : ' + address.isPresentAddress);
+
+            });
+            $('#infoModal').modal();
+        })
+
+
+    })
+
+
+
+
+
+    $('.modal-dialog').draggable({
+        handle: ".modal-header",
+        cursor:"move"
     });
 </script>
 </body>
