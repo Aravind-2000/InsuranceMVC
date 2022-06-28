@@ -239,7 +239,7 @@
                             <div class="col">
                                 <label>
                                     Present Address
-                                    <input type="checkbox"  th:field="${newAddress.isPresentAddress}" value="${newAddress.isPresentAddress}" id="editIsPresentAddress" class="form-check-input"  />
+                                    <input type="checkbox" th:field="${newAddress.isPresentAddress}" id="editIsPresentAddress" class="form-check-input"  />
                                 </label>
                             </div>
 
@@ -307,7 +307,7 @@
                 $('#editCountry').val(address.country);
                 $('#editPincode').val(address.pincode);
                 $('#editAddressType').val(address.addressType);
-                $('#editIsPresentAddress').html(address.isPresentAddress !== true);
+                $('#editIsPresentAddress').html(address.isPresentAddress).prop('checked', address.isPresentAddress === true);
             });
             $('#editModal').modal();
         })
@@ -328,16 +328,11 @@
                 $('#infoPincode').text(' ZipCode / Postal Code : ' + address.pincode);
                 $('#infoAddressType').text( 'Address Type : ' +   address.addressType);
                 $('#infoIsPresentAddress').text( 'Is Present Address : ' + address.isPresentAddress);
-
             });
             $('#infoModal').modal();
         })
 
-
     })
-
-
-
 
 
     $('.modal-dialog').draggable({
