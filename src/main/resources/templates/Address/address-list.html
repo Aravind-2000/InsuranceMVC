@@ -26,7 +26,7 @@
     <br/>
     <br/>
 
-     <a data-toggle="modal" data-target="#addModal" ><i style="color: blueviolet; cursor: pointer; width: 300px" class="uil uil-plus-circle"></i> </a>
+     <a data-toggle="modal" data-backdrop="static" data-keyboard="false" data-target="#addModal" ><i style="color: blueviolet; cursor: pointer; width: 300px" class="uil uil-plus-circle"></i> </a>
 
 
     <br/>
@@ -38,6 +38,8 @@
             <td> Address Owner </td>
             <td> Address Line </td>
             <td> City </td>
+            <td>Actions </td>
+
         </tr>
         </thead>
 
@@ -158,7 +160,7 @@
 
 
 <!--Update Modal-->
-<div class="modal fade " id=editModal tabindex="-1" role="dialog"  aria-hidden="true">
+<div class="modal fade " id=editModal tabindex="-1" role="dialog"  aria-hidden="true" >
     <div class="modal-dialog modal-dialog-centered modal-xl" role="document">
         <div class="modal-content">
             <div class="modal-header">
@@ -255,7 +257,6 @@
     </div>
 </div>
 
-
 <!--Info Modal-->
 
 <div class="modal fade " id=infoModal tabindex="-1" role="dialog"  aria-hidden="true">
@@ -308,7 +309,10 @@
                 $('#editAddressType').val(address.addressType);
                 $('#editIsPresentAddress').html(address.isPresentAddress).prop('checked', address.isPresentAddress === true);
             });
-            $('#editModal').modal();
+            $('#editModal').modal({
+                backdrop: 'static',
+                keyboard: false
+            });
         })
 
         $('.table .infoBtn').on('click', function (event){
@@ -328,7 +332,10 @@
                 $('#infoAddressType').text( 'Address Type : ' +   address.addressType);
                 $('#infoIsPresentAddress').text( 'Is Present Address : ' + address.isPresentAddress);
             });
-            $('#infoModal').modal();
+            $('#infoModal').modal({
+                backdrop: 'static',
+                keyboard: false
+            });
         })
 
     })

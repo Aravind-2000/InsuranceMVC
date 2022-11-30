@@ -1,43 +1,42 @@
 package com.example.insurancemvc.Controller;
 
 
-import com.example.insurancemvc.Entity.Agent;
-import com.example.insurancemvc.Service.AgentService;
+import com.example.insurancemvc.Entity.Client;
+import com.example.insurancemvc.Service.ClientService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
 import org.springframework.web.bind.annotation.*;
 import org.springframework.web.servlet.ModelAndView;
 
 @Controller
-@RequestMapping("/agent")
-public class AgentController {
+@RequestMapping("/client")
+public class ClientController {
+
 
     @Autowired
-    private AgentService agentService;
-
+    private ClientService clientService;
 
 
     @GetMapping("/getall")
     public ModelAndView getAll(){
-        return agentService.getAllAgents();
+        return clientService.getAllClientView();
     }
 
-
     @PostMapping("/add")
-    public String add(@ModelAttribute Agent agent){
-        agentService.addAgent(agent);
+    public String add(@ModelAttribute Client client){
+        clientService.addClient(client);
         return "redirect:getall";
     }
 
     @GetMapping("/getOne")
     @ResponseBody
-    public Agent get(Long id){
-        return agentService.getAgent(id);
+    public Client get(Long id){
+        return clientService.getClient(id);
     }
 
     @GetMapping("/softDelete")
     public String softDelete(@RequestParam Long id){
-        agentService.softDeleteAgent(id);
+        clientService.softDelete(id);
         return "redirect:getall";
     }
 

@@ -8,7 +8,7 @@ import java.util.List;
 
 public interface OfficeRepository extends JpaRepository<Office, Long> {
 
-    @Query(value = "select * from office where office_status = 'active' ", nativeQuery = true)
+    @Query(value = "select * from office where valid_flag = 1 ", nativeQuery = true)
     List<Office> getAllActiveOffices();
 
     @Query(value = "select * from office  where up_level_office_id = :id", nativeQuery = true)
@@ -17,8 +17,8 @@ public interface OfficeRepository extends JpaRepository<Office, Long> {
     @Query(value = "select * from office  where office_level_id = :id", nativeQuery = true)
     List<Office> getByOfficeLevel(Long id);
 
-    @Query(value = "select * from office where office_id like %:key% and office_status = 'active' " +
-            "or office_name like %:key% and office_status = 'active' " , nativeQuery = true)
+    @Query(value = "select * from office where office_id like %:key% and valid_flag = 1 " +
+            "or office_name like %:key% and valid_flag = 1 " , nativeQuery = true)
     List<Office> globalSearch(String key);
 
 }

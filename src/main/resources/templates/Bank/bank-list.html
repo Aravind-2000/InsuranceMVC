@@ -1,0 +1,270 @@
+<!DOCTYPE html>
+<html lang="en" xmlns:th="http://www.thymeleaf.org">
+<head>
+    <meta charset="UTF-8">
+    <title>Bank </title>
+
+    <script th:src="@{/webjars/jquery/3.6.0/jquery.min.js}"></script>
+    <script th:src="@{/webjars/jquery/3.6.0/jquery.js}"></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/jqueryui/1.12.1/jquery-ui.min.js"  crossorigin="anonymous" referrerpolicy="no-referrer"></script>
+    <script th:src="@{/webjars/popper.js/2.9.3/umd/popper.min.js}"></script>
+    <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.1.3/dist/css/bootstrap.min.css" rel="stylesheet"  crossorigin="anonymous">
+    <script src="https://maxcdn.bootstrapcdn.com/bootstrap/4.0.0/js/bootstrap.min.js"></script>
+    <link rel="stylesheet" href="https://unicons.iconscout.com/release/v4.0.0/css/line.css">
+
+
+
+
+</head>
+<body>
+<div class="container">
+    <br/>
+    <br/>
+    <br/>
+    <br/>
+    <h2> Bank List </h2>
+    <br/>
+    <br/>
+
+    <a data-toggle="modal" data-backdrop="static" data-keyboard="false" data-target="#addModal" ><i style="color: blueviolet; cursor: pointer; width: 300px" class="uil uil-plus-circle"></i> </a>
+
+
+    <br/>
+    <br/>
+    <table class="table table-bordered table-striped">
+        <thead>
+        <tr>
+            <td> ID </td>
+            <td> Account Holder Name </td>
+            <td> Account Number </td>
+            <td> IFSC Code </td>
+            <td>Actions </td>
+
+        </tr>
+        </thead>
+
+        <tbody>
+        <tr th:each="bank: ${banks}">
+            <td th:text="${bank.id}" ></td>
+            <td th:text="${bank.accountHolderName}" ></td>
+            <td th:text="${bank.accountNumber}" ></td>
+            <td th:text="${bank.ifscCode}" ></td>
+            <td>
+                <div style="display: flex">
+                    <a style="text-decoration: none" class="infoBtn" th:href="@{/bank/getOne/(id=${bank.id})}"><i style="margin-left: 5px; cursor: pointer" class="uil uil-info-circle"></i></a>
+                    <a style="text-decoration: none" class="editBtn" th:href="@{/bank/getOne/(id=${bank.id})}"><i class="uil uil-edit-alt" style="margin-left: 5px;cursor: pointer"></i></a>
+                    <a style="text-decoration: none" th:href="@{/bank/softDelete(id=${bank.id})}"><i class="uil uil-trash-alt" style="margin-left: 5px"></i></a>
+                </div>
+            </td>
+        </tr>
+        </tbody>
+    </table>
+</div>
+
+<!--Add Modal-->
+<div class="modal fade " id="addModal" tabindex="-1" role="dialog"  aria-hidden="true">
+    <div class="modal-dialog modal-dialog-centered modal-xl" role="document">
+        <div class="modal-content">
+            <div class="modal-header">
+                <h5 class="modal-title" >Add Bank</h5>
+                <button type="button" class="btn-close" data-dismiss="modal" aria-label="Close">
+                </button>
+            </div>
+            <div class="modal-body">
+
+                <div class="container">
+                    <form th:action="@{/bank/add}" method="post" th:object="${newBank}">
+                        <div class="row">
+                            <div class="col">
+                                <label>
+                                    Account Holder Name
+                                    <input type="text" th:field="${newBank.accountHolderName}" class="form-control col-4 mb-4 "  placeholder="Enter Account holder name" />
+                                </label>
+                            </div>
+
+                            <div class="col">
+                                <label>
+                                    Account Number
+                                    <input type="text" th:field="${newBank.accountNumber}" class="form-control col-4 mb-4 "  placeholder="Enter account no " />
+                                </label>
+                            </div>
+
+                            <div class="col">
+                                <label>
+                                   IFSC Code
+                                    <input type="text" th:field="${newBank.ifscCode}" class="form-control col-4 mb-4 "  placeholder="Enter ifsc code" />
+                                </label>
+                            </div>
+                        </div>
+
+                        <div class="row">
+                            <div class="col">
+                                <label>
+                                    Bank Name
+                                    <input type="text" th:field="${newBank.bankName}" class="form-control col-4 mb-4 "  placeholder="Enter bank name" />
+                                </label>
+                            </div>
+
+                            <div class="col">
+                                <label>
+                                    Bank Branch
+                                    <input type="text" th:field="${newBank.bankBranch}" class="form-control col-4 mb-4 "  placeholder="Enter bank branch" />
+                                </label>
+                            </div>
+                            <div class="col"></div>
+                        </div>
+                        <div style="display: flex">
+                            <button class="btn btn-success"  type="submit"> Save </button>
+                            <button  data-dismiss="modal" class="btn btn-danger" style="margin-left: 10px" type="reset"> Cancel </button>
+                        </div>
+                    </form>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+
+
+<!--Update Modal-->
+<div class="modal fade " id=editModal tabindex="-1" role="dialog"  aria-hidden="true">
+    <div class="modal-dialog modal-dialog-centered modal-xl" role="document">
+        <div class="modal-content">
+            <div class="modal-header">
+                <h5 class="modal-title" >Update Bank</h5>
+                <button type="button" class="btn-close" data-dismiss="modal" aria-label="Close">
+                </button>
+            </div>
+            <div class="modal-body">
+
+                <div class="container">
+                    <form th:action="@{/bank/add}" method="post" th:object="${newBank}"  >
+                        <input type="text" th:field="${newBank.id}"  id="editId" hidden/>
+                        <div class="row">
+                            <div class="col">
+                                <label>
+                                    Account Holder Name
+                                    <input type="text"  class="form-control col-4 mb-4 " id="editAccName" th:field="${newBank.accountHolderName}"  placeholder="Enter address owner" />
+                                </label>
+                            </div>
+
+                            <div class="col">
+                                <label>
+                                    Account Number
+                                    <input type="text" class="form-control col-4 mb-4 " th:field="${newBank.accountNumber}" id="editAccNum"  placeholder="Enter address line" />
+                                </label>
+                            </div>
+
+                            <div class="col">
+                                <label>
+                                    IFSC Code
+                                    <input type="text"  class="form-control col-4 mb-4 " th:field="${newBank.ifscCode}"  id="editIfscCode" placeholder="Enter address line" />
+                                </label>
+                            </div>
+                        </div>
+
+                        <div class="row">
+                            <div class="col">
+                                <label>
+                                    Bank Name
+                                    <input type="text"  class="form-control col-4 mb-4 " id="editBankName" th:field="${newBank.bankName}" placeholder="Enter your city" />
+                                </label>
+                            </div>
+
+                            <div class="col">
+                                <label>
+                                    Bank Branch
+                                    <input type="text"  class="form-control col-4 mb-4 "  th:field="${newBank.bankBranch}" id="editBankBranch" placeholder="Enter your state" />
+                                </label>
+                            </div>
+                            <div class="col"></div>
+                        </div>
+                        <div style="display: flex">
+                            <button class="btn btn-success"  type="submit"> Save </button>
+                            <button  data-dismiss="modal" class="btn btn-danger" style="margin-left: 10px" type="reset"> Cancel </button>
+                        </div>
+                    </form>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+
+
+<!--Info Modal-->
+<div class="modal fade " id=infoModal tabindex="-1" role="dialog"  aria-hidden="true">
+    <div class="modal-dialog modal-dialog-centered modal-lg" role="document">
+        <div class="modal-content">
+            <div class="modal-header">
+                <h5 class="modal-title" >Info Bank</h5>
+                <button type="button" class="btn-close" data-dismiss="modal" aria-label="Close">
+                </button>
+            </div>
+            <div class="modal-body">
+                <div class="container">
+                    <h2> Bank Information </h2>
+                    <h6 id="infoId"></h6>
+                    <h6 id="infoAccName" ></h6>
+                    <h6 id="infoAccNum"></h6>
+                    <h6 id="infoIfscCode" ></h6>
+                    <h6 id="infoBankName"></h6>
+                    <h6 id="infoBankBranch"></h6>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+
+
+
+
+<script>
+
+    $('document').ready(function (){
+        $('.table .editBtn').on('click', function (event){
+            event.preventDefault();
+
+            const href = $(this).attr('href');
+
+            $.get(href, function (bank){
+                $('#editId').val(bank.id);
+                $('#editAccName').val(bank.accountHolderName);
+                $('#editAccNum').val(bank.accountNumber);
+                $('#editIfscCode').val(bank.ifscCode);
+                $('#editBankName').val(bank.bankName);
+                $('#editBankBranch').val(bank.bankBranch);
+            });
+            $('#editModal').modal({
+                backdrop: 'static',
+                keyboard: false
+            });
+        })
+
+        $('.table .infoBtn').on('click', function (event){
+            event.preventDefault();
+
+            const href = $(this).attr('href');
+
+            $.get(href, function (bank){
+                $('#infoId').text( 'ID : ' + bank.id);
+                $('#infoAccName').text( 'Account Holder Name : ' + bank.accountHolderName);
+                $('#infoAccNum').text('Account Number : ' +  bank.accountNumber);
+                $('#infoIfscCode').text( 'IFSC Code : ' +  bank.ifscCode);
+                $('#infoBankName').text( 'Bank Name : ' +  bank.bankName);
+                $('#infoBankBranch').text('Bank Branch : ' +  bank.bankBranch);
+            });
+            $('#infoModal').modal({
+                backdrop: 'static',
+                keyboard: false
+            });
+        })
+
+    })
+
+
+    $('.modal-dialog').draggable({
+        handle: ".modal-header",
+        cursor:"move"
+    });
+</script>
+</body>
+</html>

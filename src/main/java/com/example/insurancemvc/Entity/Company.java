@@ -1,6 +1,5 @@
 package com.example.insurancemvc.Entity;
 
-import java.time.LocalDate;
 import java.time.LocalDateTime;
 import javax.persistence.*;
 
@@ -8,7 +7,6 @@ import lombok.Getter;
 import lombok.Setter;
 import org.hibernate.annotations.CreationTimestamp;
 import org.hibernate.annotations.UpdateTimestamp;
-import com.fasterxml.jackson.annotation.JsonFormat;
 import com.fasterxml.jackson.annotation.JsonProperty;
 
 @Entity
@@ -18,7 +16,9 @@ public class Company {
 	
 	@Id
 	@GeneratedValue(strategy = GenerationType.IDENTITY)
-	private Long companyId;
+	private Long id;
+
+	private String companyId;
 
 	private String companyName;
 
@@ -26,8 +26,8 @@ public class Company {
 
 	private String companyLicenseNumber;
 
-	@JsonFormat(pattern = "MM-dd-yyyy")
-	private LocalDate companyLicenseIssueDate;
+//	@JsonFormat(pattern = "MM-dd-yyyy")
+	private String companyLicenseIssueDate;
 
 	private String companyCurrency;
 
@@ -35,7 +35,7 @@ public class Company {
 //	@JoinColumn(name = "companyCurrency", updatable = false, insertable = false)
 //	private CurrencyCode currencyCode;
 
-	private String companyStatus;
+//	private String companyStatus;
 
 	@JsonProperty(access = JsonProperty.Access.WRITE_ONLY)
     private int validFlag;

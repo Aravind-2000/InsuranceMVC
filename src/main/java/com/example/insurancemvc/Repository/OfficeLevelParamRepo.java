@@ -9,7 +9,7 @@ import java.util.List;
 public interface OfficeLevelParamRepo extends JpaRepository<OfficeLevelParam, Long> {
 
 
-    @Query(value = "select * from office_level_param where is_valid = 1", nativeQuery = true)
+    @Query(value = "select * from office_level_param where valid_flag = 1", nativeQuery = true)
     List<OfficeLevelParam> getAllActiveLevels();
 
 }

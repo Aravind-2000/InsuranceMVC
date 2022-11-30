@@ -17,7 +17,9 @@ public class Office {
 
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
-    private Long officeId;
+    private Long id;
+
+    private String officeId;
 
     private String officeName;
 

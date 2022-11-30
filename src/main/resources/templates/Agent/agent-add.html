@@ -39,7 +39,7 @@
                     <label> Client ID
                         <select th:field="${agent.clientId}" class="form-control col-4 mb-4" >
                             <option  value=""> --Select a option-- </option>
-                            <option  th:each="client: ${clients}" value="${client.id}" th:text="${client.clientId} + ' ' + ${client.givenName}">   </option>
+                            <option  th:each="client: ${clients}" th:value="${client.id}" th:text="${client.clientId} + ' ' + ${client.givenName}">   </option>
                         </select>
                     </label>
             </div>

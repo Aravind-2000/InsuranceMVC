@@ -1,0 +1,570 @@
+<!DOCTYPE html>
+<html lang="en" xmlns:th="http://www.thymeleaf.org">
+<head>
+    <meta charset="UTF-8">
+    <title> Client </title>
+
+<!--    <script th:src="@{/webjars/jquery/3.6.0/jquery.min.js}"></script>-->
+<!--    <script th:src="@{/webjars/jquery/3.6.0/jquery.js}"></script>-->
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/jquery/3.6.0/jquery.js" integrity="sha512-n/4gHW3atM3QqRcbCn6ewmpxcLAHGaDjpEBu4xZd47N0W2oQ+6q7oc3PXstrJYXcbNU1OHdQ1T7pAP+gi5Yu8g==" crossorigin="anonymous" referrerpolicy="no-referrer"></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/jqueryui/1.12.1/jquery-ui.min.js"  crossorigin="anonymous" referrerpolicy="no-referrer"></script>
+<!--    <script th:src="@{/webjars/popper.js/2.9.3/umd/popper.min.js}"></script>-->
+    <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.1.3/dist/css/bootstrap.min.css" rel="stylesheet"  crossorigin="anonymous">
+    <script src="https://maxcdn.bootstrapcdn.com/bootstrap/4.0.0/js/bootstrap.min.js"></script>
+    <link rel="stylesheet" href="https://unicons.iconscout.com/release/v4.0.0/css/line.css">
+</head>
+
+<body>
+
+
+<div class="container">
+    <br/>
+    <br/>
+    <br/>
+    <br/>
+    <h2> Client List </h2>
+    <br/>
+    <br/>
+
+
+    <a data-toggle="modal" data-backdrop="static" data-keyboard="false" data-target="#addModal" ><i style="color: blueviolet; cursor: pointer; width: 300px" class="uil uil-plus-circle"></i> </a>
+
+
+    <br/>
+    <br/>
+    <table class="table table-bordered table-striped">
+        <thead>
+        <tr>
+            <td> Client ID </td>
+            <td> Client Name </td>
+            <td> Client Email </td>
+            <td> Gender </td>
+            <td>Actions </td>
+        </tr>
+        </thead>
+
+        <tbody>
+        <tr th:each="client: ${clients}">
+            <td th:text="${client.clientId}" ></td>
+            <td th:text="${client.givenName} + ' ' + ${client.surName}" ></td>
+            <td th:text="${client.email}" ></td>
+            <td th:text="${client.gender}" ></td>
+            <td>
+                <div style="display: flex">
+                    <a style="text-decoration: none" class="infoBtn" th:href="@{/client/getOne/(id=${client.id})}"><i style="margin-left: 5px; cursor: pointer" class="uil uil-info-circle"></i></a>
+                    <a style="text-decoration: none" class="editBtn" th:href="@{/client/getOne/(id=${client.id})}"><i class="uil uil-edit-alt" style="margin-left: 5px;cursor: pointer"></i></a>
+                    <a style="text-decoration: none" th:href="@{/client/softDelete(id=${client.id})}"><i class="uil uil-trash-alt" style="margin-left: 5px"></i></a>
+                </div>
+            </td>
+        </tr>
+        </tbody>
+    </table>
+</div>
+
+<!--add modal-->
+<div class="modal fade " id="addModal" tabindex="-1" role="dialog"  aria-hidden="true">
+    <div class="modal-dialog modal-dialog-centered modal-xl" role="document">
+        <div class="modal-content">
+            <div class="modal-header">
+                <h5 class="modal-title" >Add Client</h5>
+                <button type="button" class="btn-close" data-dismiss="modal" aria-label="Close">
+                </button>
+            </div>
+            <div class="modal-body">
+
+                <div class="container">
+                    <form th:action="@{/client/add}" method="post" th:object="${newClient}">
+                        <div class="row">
+                            <div class="col">
+                                <label>
+                                    Client ID
+                                    <input type="text" th:field="${newClient.clientId}" class="form-control col-4 mb-4 "  placeholder="Enter client id" />
+                                </label>
+                            </div>
+                            <div class="col">
+                                <label>
+                                    Given Name
+                                    <input type="text" th:field="${newClient.givenName}" class="form-control col-4 mb-4 "  placeholder="Enter given name" />
+                                </label>
+                            </div>
+                            <div class="col">
+                                <label>
+                                    Sur Name
+                                    <input type="text" th:field="${newClient.surName}" class="form-control col-4 mb-4 "  placeholder="Enter sur name " />
+                                </label>
+                            </div>
+                        </div>
+
+                        <div class="row">
+                            <div class="col">
+                                <label>
+                                    Salutation
+                                    <select  th:field="${newClient.salutation}" class="form-control col-4 mb-4 ">
+                                        <option value=""> --Select an option-- </option>
+                                        <option th:each="val : ${salutations}" th:value="${val}" th:text="${val}">  </option>
+
+                                    </select>
+                                </label>
+                            </div>
+
+                            <div class="col">
+                                <label>
+                                    Gender
+                                    <select  th:field="${newClient.gender}" class="form-control col-4 mb-4 ">
+                                        <option value=""> --Select an option-- </option>
+                                        <option th:each="val : ${genders}" th:value="${val}" th:text="${val}">  </option>
+                                    </select>
+                                </label>
+                            </div>
+                            <div class="col">
+                                <label>
+                                    Marital Status
+                                    <select  th:field="${newClient.maritalStatus}" class="form-control col-4 mb-4 ">
+                                        <option value=""> --Select an option-- </option>
+                                        <option th:each="val : ${relationships}" th:value="${val}" th:text="${val}">  </option>
+                                    </select>
+                                </label>
+                            </div>
+                        </div>
+
+                        <div class="row">
+                            <div class="col">
+                                <label>
+                                    Address
+                                    <select  th:field="${newClient.addressId}" class="form-control col-4 mb-4 ">
+                                        <option value=""> --Select an option-- </option>
+                                        <option th:each="address : ${addresses}" th:value="${address.id}" th:text="${address.id} + ' ' + ${address.toAddress}">  </option>
+
+                                    </select>
+                                </label>
+                            </div>
+
+                            <div class="col">
+                                <label>
+                                    Bank
+                                    <select  th:field="${newClient.bankId}" class="form-control col-4 mb-4 ">
+                                        <option value=""> --Select an option-- </option>
+                                        <option th:each="bank : ${banks}" th:value="${bank.id}" th:text="${bank.id} + ' ' + ${bank.accountHolderName}">  </option>
+                                    </select>
+                                </label>
+                            </div>
+                            <div class="col">
+                                <label>
+                                    E-Mail
+                                    <input type="text" th:field="${newClient.email}" class="form-control col-4 mb-4 "  placeholder="Enter email" />
+                                </label>
+                            </div>
+                        </div>
+
+                        <div class="row">
+                            <div class="col">
+                                <label>
+                                    Mobile Number
+                                    <input type="number" th:field="${newClient.mobileNumber}" class="form-control col-4 mb-4 "  placeholder="Enter mobile number" />
+                                </label>
+                            </div>
+                            <div class="col">
+                                <label>
+                                    PostalCode/ZipCode
+                                    <input type="number" th:field="${newClient.postalCode}" class="form-control col-4 mb-4 "  placeholder="Enter postal code" />
+                                </label>
+                            </div>
+                            <div class="col">
+                                <label>
+                                    Country
+                                    <input type="text" th:field="${newClient.country}" class="form-control col-4 mb-4 "  placeholder="Enter country " />
+                                </label>
+                            </div>
+                        </div>
+
+                        <div class="row">
+                            <div class="col">
+                                <label>
+                                    Nationality
+                                    <input type="text" th:field="${newClient.nationality}" class="form-control col-4 mb-4 "  placeholder="Enter nationality" />
+                                </label>
+                            </div>
+                            <div class="col">
+                                <label>
+                                    Company Doctor
+                                    <input type="checkbox" th:field="${newClient.companyDoctor}" class="form-check-input"/>
+                                </label>
+                            </div>
+                            <div class="col">
+                                <label>
+                                    Birth Date
+                                    <input type="date"   th:field="${newClient.birthDate}"  class="form-control col-4 mb-4 " />
+                                </label>
+                            </div>
+                        </div>
+
+                        <div class="row">
+                            <div class="col">
+                                <label>
+                                   Birth Place
+                                    <input type="text" th:field="${newClient.birthPlace}" class="form-control col-4 mb-4 "  placeholder="Enter birth place " />
+                                </label>
+                            </div>
+                            <div class="col">
+                                <label>
+                                    Language
+                                    <input type="text" th:field="${newClient.language}" class="form-control col-4 mb-4 "  placeholder="Enter your native language" />
+                                </label>
+                            </div>
+                            <div class="col">
+                                <label>
+                                   Category
+                                    <input type="text" th:field="${newClient.category}" class="form-control col-4 mb-4 "  placeholder="Enter category" />
+                                </label>
+                            </div>
+                            <div class="col">
+                                <label>
+                                    Occupation
+                                    <select  th:field="${newClient.occupation}" class="form-control col-4 mb-4 ">
+                                        <option value=""> --Select an option-- </option>
+                                        <option th:each="val : ${occupations}" th:value="${val}" th:text="${val}">  </option>
+                                    </select>
+                                </label>
+                            </div>
+                            </div>
+                        <div style="display: flex">
+                            <button class="btn btn-success"  type="submit"> Save </button>
+                            <button  data-dismiss="modal" class="btn btn-danger" style="margin-left: 10px" type="reset"> Cancel </button>
+                        </div>
+                    </form>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+
+<!--update modal-->
+<div class="modal fade " id="editModal" tabindex="-1" role="dialog"  aria-hidden="true">
+    <div class="modal-dialog modal-dialog-centered modal-xl" role="document">
+        <div class="modal-content">
+            <div class="modal-header">
+                <h5 class="modal-title" >Edit Client</h5>
+                <button type="button" class="btn-close" data-dismiss="modal" aria-label="Close">
+                </button>
+            </div>
+            <div class="modal-body">
+
+                <div class="container">
+                    <form th:action="@{/client/add}" method="post" th:object="${newClient}">
+                        <input type="text" th:field="${newClient.id}" id="editId" hidden/>
+                        <div class="row">
+                            <div class="col">
+                                <label>
+                                    Client ID
+                                    <input type="text" th:field="${newClient.clientId}" class="form-control col-4 mb-4 "  id="editClientId" placeholder="Enter client id" />
+                                </label>
+                            </div>
+                            <div class="col">
+                                <label>
+                                    Given Name
+                                    <input type="text" th:field="${newClient.givenName}" class="form-control col-4 mb-4 " id="editGivenName"  placeholder="Enter given name" />
+                                </label>
+                            </div>
+                            <div class="col">
+                                <label>
+                                    Sur Name
+                                    <input type="text" th:field="${newClient.surName}" class="form-control col-4 mb-4 "  id="editsurName" placeholder="Enter sur name " />
+                                </label>
+                            </div>
+                        </div>
+
+                        <div class="row">
+                            <div class="col">
+                                <label>
+                                    Salutation
+                                    <select id="editsalutation" th:field="${newClient.salutation}" class="form-control col-4 mb-4 ">
+                                        <option value=""> --Select an option-- </option>
+                                        <option th:each="val : ${salutations}" th:value="${val}" th:text="${val}">  </option>
+
+                                    </select>
+                                </label>
+                            </div>
+
+                            <div class="col">
+                                <label>
+                                    Gender
+                                    <select id="editgender"  th:field="${newClient.gender}" class="form-control col-4 mb-4 ">
+                                        <option value=""> --Select an option-- </option>
+                                        <option th:each="val : ${genders}" th:value="${val}" th:text="${val}">  </option>
+                                    </select>
+                                </label>
+                            </div>
+                            <div class="col">
+                                <label>
+                                    Marital Status
+                                    <select id="editmaritalStatus" th:field="${newClient.maritalStatus}" class="form-control col-4 mb-4 ">
+                                        <option value=""> --Select an option-- </option>
+                                        <option th:each="val : ${relationships}" th:value="${val}" th:text="${val}">  </option>
+                                    </select>
+                                </label>
+                            </div>
+                        </div>
+
+                        <div class="row">
+                            <div class="col">
+                                <label>
+                                    Address
+                                    <select id="editaddressId" th:field="${newClient.addressId}" class="form-control col-4 mb-4 ">
+                                        <option value=""> --Select an option-- </option>
+                                        <option th:each="address : ${addresses}" th:value="${address.id}" th:text="${address.id} + ' ' + ${address.toAddress}">  </option>
+
+                                    </select>
+                                </label>
+                            </div>
+
+                            <div class="col">
+                                <label>
+                                    Bank
+                                    <select id="editbankId" th:field="${newClient.bankId}" class="form-control col-4 mb-4 ">
+                                        <option value=""> --Select an option-- </option>
+                                        <option th:each="bank : ${banks}" th:value="${bank.id}" th:text="${bank.id} + ' ' + ${bank.accountHolderName}">  </option>
+                                    </select>
+                                </label>
+                            </div>
+                            <div class="col">
+                                <label>
+                                    E-Mail
+                                    <input type="text" th:field="${newClient.email}" class="form-control col-4 mb-4 "  id="editemail" placeholder="Enter email" />
+                                </label>
+                            </div>
+                        </div>
+
+                        <div class="row">
+                            <div class="col">
+                                <label>
+                                    Mobile Number
+                                    <input type="number" th:field="${newClient.mobileNumber}" class="form-control col-4 mb-4 " id="editmobileNumber" placeholder="Enter mobile number" />
+                                </label>
+                            </div>
+                            <div class="col">
+                                <label>
+                                    PostalCode/ZipCode
+                                    <input type="number" th:field="${newClient.postalCode}" class="form-control col-4 mb-4 " id="editpostalCode" placeholder="Enter postal code" />
+                                </label>
+                            </div>
+                            <div class="col">
+                                <label>
+                                    Country
+                                    <input type="text" th:field="${newClient.country}" class="form-control col-4 mb-4 " id="editcountry" placeholder="Enter country " />
+                                </label>
+                            </div>
+                        </div>
+
+                        <div class="row">
+                            <div class="col">
+                                <label>
+                                    Nationality
+                                    <input type="text" th:field="${newClient.nationality}" class="form-control col-4 mb-4 " id="editnationality"  placeholder="Enter nationality" />
+                                </label>
+                            </div>
+                            <div class="col">
+                                <label>
+                                    Company Doctor
+                                    <input type="checkbox" th:field="${newClient.companyDoctor}" id="editcompanyDoctor" class="form-check-input"/>
+                                </label>
+                            </div>
+                            <div class="col">
+                                <label>
+                                    Birth Date
+                                    <input type="date"   th:field="${newClient.birthDate}" id="editbirthDate" class="form-control col-4 mb-4 " />
+                                </label>
+                            </div>
+                        </div>
+
+                        <div class="row">
+                            <div class="col">
+                                <label>
+                                    Birth Place
+                                    <input type="text" th:field="${newClient.birthPlace}" id="editbirthPlace" class="form-control col-4 mb-4 "  placeholder="Enter birth place " />
+                                </label>
+                            </div>
+                            <div class="col">
+                                <label>
+                                    Language
+                                    <input type="text" th:field="${newClient.language}" id="editlanguage" class="form-control col-4 mb-4 "  placeholder="Enter your native language" />
+                                </label>
+                            </div>
+                            <div class="col">
+                                <label>
+                                    Category
+                                    <input type="text" th:field="${newClient.category}" id="editcategory" class="form-control col-4 mb-4 "  placeholder="Enter category" />
+                                </label>
+                            </div>
+                            <div class="col">
+                                <label>
+                                    Occupation
+                                    <select id="editoccupation" th:field="${newClient.occupation}" class="form-control col-4 mb-4 ">
+                                        <option value=""> --Select an option-- </option>
+                                        <option th:each="val : ${occupations}" th:value="${val}" th:text="${val}">  </option>
+                                    </select>
+                                </label>
+                            </div>
+                        </div>
+                        <div style="display: flex">
+                            <button class="btn btn-success"  type="submit"> Save </button>
+                            <button  data-dismiss="modal" class="btn btn-danger" style="margin-left: 10px" type="reset"> Cancel </button>
+                        </div>
+                    </form>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+
+<!--info modal-->
+<div class="modal fade " id=infoModal tabindex="-1" role="dialog"  aria-hidden="true">
+    <div class="modal-dialog modal-dialog-centered modal-lg" role="document">
+        <div class="modal-content">
+            <div class="modal-header">
+                <h5 class="modal-title" >Info Client</h5>
+                <button type="button" class="btn-close" data-dismiss="modal" aria-label="Close">
+                </button>
+            </div>
+            <div class="modal-body">
+                <div class="container">
+                    <div class="row">
+                        <div class="col">
+                            <h4> Client Information</h4>
+                            <h6 id="infoId"></h6>
+                            <h6 id="infoClientId" ></h6>
+                            <h6 id="infoName"></h6>
+                            <h6 id="infosalutation" ></h6>
+                            <h6 id="infogender"></h6>
+                            <h6 id="infomaritalStatus"></h6>
+                            <h6 id="infoemail"></h6>
+                            <h6 id="infomobileNumber"></h6>
+                            <h6 id="infocountry"></h6>
+                            <h6 id="infopostalCode"></h6>
+                            <h6 id="infonationality"></h6>
+                            <h6 id="infocompanyDoctor"></h6>
+                            <h6 id="infobirthDate"></h6>
+                            <h6 id="infobirthPlace"></h6>
+                            <h6 id="infolanguage"></h6>
+                            <h6 id="infocategory"></h6>
+                            <h6 id="infooccupation"></h6>
+                        </div>
+                        <div class="col">
+                            <h4> Address Details</h4>
+                            <h6 id="infoaddressid"></h6>
+                            <h6 id="infoToAddress" ></h6>
+                            <h6 id="infoAddressLine1"></h6>
+                            <h6 id="infoAddressLine2" ></h6>
+                            <h6 id="infoCity"></h6>
+                            <h6 id="infoState"></h6>
+                            <h6 id="infoAddressCountry"></h6>
+                            <h6 id="infoPincode"></h6>
+                            <h6 id="infoAddressType"></h6>
+                            <h6 id="infoIsPresentAddress"></h6>
+                            <h4> Bank Details</h4>
+                            <h6 id="infobankId"></h6>
+                            <h6 id="infoAccName" ></h6>
+                            <h6 id="infoAccNum"></h6>
+                            <h6 id="infoIfscCode" ></h6>
+                            <h6 id="infoBankName"></h6>
+                            <h6 id="infoBankBranch"></h6>
+                        </div>
+                        </div>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+
+<script>
+
+    $('document').ready(function () {
+
+        $('.table .editBtn').on('click', function (event) {
+            event.preventDefault();
+
+            const href = $(this).attr('href');
+
+            $.get(href, function (client) {
+                $('#editId').val(client.id);
+                $('#editClientId').val(client.clientId);
+                $('#editGivenName').val(client.givenName);
+                $('#editsurName').val(client.surName);
+                $('#editsalutation').val(client.salutation);
+                $('#editgender').val(client.gender);
+                $('#editmaritalStatus').val(client.maritalStatus);
+                $('#editaddressId').val(client.addressId);
+                $('#editemail').val(client.email);
+                $('#editmobileNumber').val(client.mobileNumber);
+                $('#editcountry').val(client.country);
+                $('#editpostalCode').val(client.postalCode);
+                $('#editnationality').val(client.nationality);
+                $('#editcompanyDoctor').html(client.companyDoctor).prop("checked", client.companyDoctor === true);
+                $('#editbirthDate').val(client.birthDate);
+                $('#editbirthPlace').val(client.birthPlace);
+                $('#editlanguage').val(client.language);
+                $('#editcategory').val(client.category);
+                $('#editoccupation').val(client.occupation);
+                $('#editbankId').val(client.bankId);
+            });
+            $('#editModal').modal({
+                backdrop: 'static',
+                keyboard: false
+            });
+        })
+
+        $('.table .infoBtn').on('click', function (event) {
+            event.preventDefault();
+
+            const href = $(this).attr('href');
+
+            $.get(href, function (client) {
+                $('#infoId').text('ID : ' + client.id);
+                $('#infoClientId').text('Client ID : ' +client.clientId);
+                $('#infoName').text('Client Name : ' + client.givenName + client.surName);
+                $('#infosalutation').text('Salutation : ' +client.salutation);
+                $('#infogender').text('Gender : ' +client.gender);
+                $('#infomaritalStatus').text('Marital Status : ' +client.maritalStatus);
+                $('#infoemail').text('E-Mail : ' +client.email);
+                $('#infomobileNumber').text('Mobile Number : ' +client.mobileNumber);
+                $('#infocountry').text('Country : ' +client.country);
+                $('#infopostalCode').text('PostalCode : ' +client.postalCode);
+                $('#infonationality').text('Nationality : ' +client.nationality);
+                $('#infocompanyDoctor').text('Company Doctor : ' +client.companyDoctor);
+                $('#infobirthDate').text('BirthDate : ' +client.birthDate);
+                $('#infobirthPlace').text('Birth Place : ' +client.birthPlace);
+                $('#infolanguage').text('Language : ' +client.language);
+                $('#infocategory').text('Category : ' +client.category);
+                $('#infooccupation').text('Occuaption : ' +client.occupation);
+                $('#infoaddressId').text( 'ID : ' + client.address.id);
+                $('#infoToAddress').text('To Address : ' + client.address.toAddress);
+                $('#infoAddressLine1').text('Address Line 1 : ' + client.address.addressLine1);
+                $('#infoAddressLine2').text('Address Line 2 : ' + client.address.addressLine2);
+                $('#infoCity').text('City : ' + client.address.city);
+                $('#infoState').text(' State : ' + client.address.state);
+                $('#infoAddressCountry').text(' Country : ' + client.address.country);
+                $('#infoPincode').text(' ZipCode / Postal Code : ' + client.address.pincode);
+                $('#infoAddressType').text( 'Address Type : ' +   client.address.addressType);
+                $('#infoIsPresentAddress').text( 'Is Present Address : ' + client.address.isPresentAddress);
+                $('#infobankId').text( 'ID : ' + client.bank.id);
+                $('#infoAccName').text( 'Account Holder Name : ' + client.bank.accountHolderName);
+                $('#infoAccNum').text('Account Number : ' +  client.bank.accountNumber);
+                $('#infoIfscCode').text( 'IFSC Code : ' +  client.bank.ifscCode);
+                $('#infoBankName').text( 'Bank Name : ' +  client.bank.bankName);
+                $('#infoBankBranch').text('Bank Branch : ' +  client.bank.bankBranch);
+            });
+            $('#infoModal').modal({
+                backdrop: 'static',
+                keyboard: false
+            });
+        })
+
+    });
+
+
+    $('.modal-dialog').draggable({
+        handle: ".modal-header",
+        cursor:"move"
+    });
+</script>
+</body>
+</html>

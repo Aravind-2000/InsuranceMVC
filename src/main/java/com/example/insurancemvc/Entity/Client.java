@@ -1,6 +1,5 @@
 package com.example.insurancemvc.Entity;
 
-import com.fasterxml.jackson.annotation.JsonFormat;
 import com.fasterxml.jackson.annotation.JsonProperty;
 import lombok.Getter;
 import lombok.Setter;
@@ -8,10 +7,7 @@ import org.hibernate.annotations.CreationTimestamp;
 import org.hibernate.annotations.UpdateTimestamp;
 
 import javax.persistence.*;
-import java.time.LocalDate;
 import java.time.LocalDateTime;
-import java.util.ArrayList;
-import java.util.List;
 
 @Entity
 @Getter
@@ -31,7 +27,6 @@ public class Client {
     private String maritalStatus;
 
 
-    @JsonProperty(access = JsonProperty.Access.WRITE_ONLY)
     private Long addressId;
 
     @OneToOne(cascade = CascadeType.ALL, fetch = FetchType.EAGER)
@@ -47,15 +42,13 @@ public class Client {
     private String nameFormat;
     private Boolean companyDoctor;
 
-    @JsonFormat(pattern = "MM-dd-yyyy")
-    private LocalDate birthDate;
+    private String birthDate;
     private String birthPlace;
     private String language;
     private String category;
     private String occupation;
 
 
-    @JsonProperty(access = JsonProperty.Access.WRITE_ONLY)
     private Long bankId;
 
     @OneToOne(cascade = CascadeType.ALL, fetch = FetchType.EAGER)

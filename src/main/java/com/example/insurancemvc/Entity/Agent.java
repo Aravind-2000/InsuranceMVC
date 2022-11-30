@@ -1,6 +1,5 @@
 package com.example.insurancemvc.Entity;
 
-import com.fasterxml.jackson.annotation.JsonFormat;
 import com.fasterxml.jackson.annotation.JsonProperty;
 import lombok.Getter;
 import lombok.Setter;
@@ -8,7 +7,6 @@ import org.hibernate.annotations.CreationTimestamp;
 import org.hibernate.annotations.UpdateTimestamp;
 
 import javax.persistence.*;
-import java.time.LocalDate;
 import java.time.LocalDateTime;
 import java.util.List;
 
@@ -30,14 +28,14 @@ public class Agent {
     @JoinColumn(name = "clientId", insertable = false, updatable = false)
     private Client client;
 
-    @JsonFormat(pattern = "dd-MM-yyyy")
-    private LocalDate dateAppointed;
+//    @JsonFormat(pattern = "dd-MM-yyyy")
+    private String dateAppointed;
 
     private String exclusive;
     private Boolean previousAgent;
 
-    @JsonFormat(pattern = "MM-dd-yyyy")
-    private LocalDate prevDateOfTermination;
+//    @JsonFormat(pattern = "MM-dd-yyyy")
+    private String prevDateOfTermination;
 
     private Long previousAgentId;
 
